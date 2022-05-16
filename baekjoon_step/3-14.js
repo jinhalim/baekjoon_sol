@@ -1,30 +1,22 @@
 const fs =require('fs');
-const input = fs.readFileSync('/dev/stdin').toString();
-// const input = '26'.toString();
+let input = fs.readFileSync('/dev/stdin').toString();
+// let input = '26'.toString();
+input = (input > 9 ? input : `0${input}`);
+const getSum = (number) => {
+    return (number.split('')).reduce((acc,curr)=>{
+        acc += Number(curr)
+        return acc;
+    },0);
+}
 let count = 0;
-let cycleList = [input];
+let num = input.split('');
 while(1){
-    // console.log(cycleList);
     ++count;
-    const afterValue = cycleList[cycleList.length-1].split('');
-    let sum = 0 ;
-    if(count > 1){
-        const beforeValue = cycleList[cycleList.length-2].split('')
-        // console.log(beforeValue[beforeValue.length-1]+afterValue[afterValue.length-1])
-        if(Number(input) == Number(beforeValue[beforeValue.length-1]+afterValue[afterValue.length-1])){
-            console.log(count)
-            break;
-        }
-        sum = Number(afterValue[afterValue.length-1]) + Number(beforeValue[beforeValue.length-1]);
-        cycleList.shift();
-    }else{
-        sum = afterValue.reduce((acc, curr)=>{
-            return acc + Number(curr);
-        },0);
-    }
-    cycleList.push(String(sum));
+    let sum = '';
+    sum = getSum(num.join(''));
+    num[0] = num[1];
+    num[1] = (String(sum).split('')).pop() 
+    if(input == num.join('')) break;
 }
 
-
-
-// console.log(cycleList);
+console.log(count)
